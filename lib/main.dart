@@ -69,6 +69,11 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
+  Future<void> login() async {
+    final Web3AuthResponse response = await Web3AuthFlutter.login(
+        LoginParams(loginProvider: Provider.google));
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -135,6 +140,14 @@ class _MyAppState extends State<MyApp> {
                     ElevatedButton(
                         onPressed: _login(_withDiscord),
                         child: const Text('Discord')),
+                    ElevatedButton(
+                      onPressed: () {
+                        login();
+                      },
+                      child: const Text(
+                        'Auto Login',
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -241,8 +254,8 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<Web3AuthResponse> _withGoogle() {
-    return Web3AuthFlutter.login(
-        LoginParams(loginProvider: Provider.google, mfaLevel: MFALevel.NONE));
+    return Web3AuthFlutter.login(LoginParams(
+        loginProvider: Provider.google, mfaLevel: MFALevel.MANDATORY));
   }
 
   Future<Web3AuthResponse> _withFacebook() {
